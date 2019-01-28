@@ -24,9 +24,9 @@ int index2=0;
 PFont orcFont;
 void setup() {
   
- size (1920, 1080); // ***CHANGE THIS TO YOUR SCREEN RESOLUTION***
+ size (1920, 1080); // ***CHANGE THIS TO YOUR SCREEN RESOLUTION*** (user input)
  smooth();
- myPort = new Serial(this,"COM4", 9600); // starts the serial communication
+ myPort = new Serial(this,"COM8", 9600); // starts the serial communication
  myPort.bufferUntil('.'); // reads the data from the serial port up to the character '.'. So actually it reads this: angle,distance.
  orcFont = loadFont("OCRAExtended-30.vlw");
 }
