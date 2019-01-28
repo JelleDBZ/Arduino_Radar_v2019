@@ -22,7 +22,10 @@ int iAngle, iDistance;
 int index1=0;
 int index2=0;
 PFont orcFont;
+
+
 void setup() {
+  
   
  size (1920, 1080); // ***CHANGE THIS TO YOUR SCREEN RESOLUTION*** (user input)
  smooth();
@@ -30,6 +33,16 @@ void setup() {
  myPort.bufferUntil('.'); // reads the data from the serial port up to the character '.'. So actually it reads this: angle,distance.
  orcFont = loadFont("OCRAExtended-30.vlw");
 }
+
+void setupSize(){
+  if(Serial.available()){
+     Serial.println("Hello");
+  }
+ 
+  
+
+}
+
 void draw() {
   
   fill(98,245,31);

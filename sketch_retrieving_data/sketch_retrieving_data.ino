@@ -8,8 +8,8 @@ const int echoPin = 11;
 const int lowDegree = 10; //here we can choose our degrees
 const int highDegree = 170;
 // Asking for user input
-const int width;
-const int height;
+int width;
+int height;
 
 // Variables for the duration and the distance
 long duration;
@@ -26,6 +26,8 @@ void setup()
 
 void loop() 
 {
+  //Asking for resolution to user
+ 
   // rotates the servo motor from lowDegree to highDegree
   for(int i=lowDegree;i<=highDegree;i++)
   {  
@@ -48,6 +50,7 @@ void loop()
 
 void printSerial(int i)
 {
+  
   Serial.print(i); // Sends the current degree into the Serial Port
   Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
   Serial.print(distance); // Sends the distance value into the Serial Port
