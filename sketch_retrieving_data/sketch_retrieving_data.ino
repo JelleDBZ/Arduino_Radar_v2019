@@ -11,6 +11,11 @@ const int echoPin = 11;
 // Constant degrees
 const int lowDegree = 10; //here we can choose our degrees
 const int highDegree = 170;
+// constants won't change. They're used here to set pin numbers:
+const int buttonPin = 2;     // the number of the pushbutton pin
+const int ledPin =  13;      // the number of the LED pin
+int buttonState = 0; 
+
 // Asking for user input
 int width;
 int height;
@@ -22,7 +27,14 @@ Servo myServo; // Creates a servo object for controlling the servo motor
 
 
 void setup(){
+
+  // initialize the LED pin as an output:
+  pinMode(ledPin, OUTPUT);
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
+  
   Serial.begin(9600);
+  
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
   pinMode(ledblue, OUTPUT);
@@ -35,20 +47,22 @@ void loop(){
   int i=0;
   int m=0;
   delay(500);
-  if (Serial.available() > 0) {
+  buttonState = digitalRead(buttonPin);
+
+   if (Serial.available() > 0 || buttonState == HIGH) {
     while (Serial.available() > 0) {
       inSerial[i]=Serial.read();
       i++;
     }
     inSerial[i]='\0';
-    if(!strcmp(inSerial,"2off")){ //Led Off
+    if(!strcmp(inSerial,"2off")){ //dien moe ng veranderen na de interrupt
       digitalWrite(ledblue, LOW);
       for(m=0;m<11;m++){
         inSerial[m]=0;
       }
       i=0;
     }
-    if(!strcmp(inSerial,"2on")){ //Led on
+    if(!strcmp(inSerial,"2on") || buttonState == HIGH){ //links rechts tourke doen
       digitalWrite(ledblue, HIGH);
       for(int i=lowDegree;i<=highDegree;i++)
       {  
@@ -79,7 +93,8 @@ void loop(){
       i=0;
     }
   }
-}
+  }
+  
 
 void printSerial(int i)
 {
