@@ -150,10 +150,6 @@ void askStateButton()
       }
 }
 
-
-//function for bluetooth
-boolean
-
 // Function for calculating the distance measured by the Ultrasonic sensor
 int calculateDistance()
 { 
