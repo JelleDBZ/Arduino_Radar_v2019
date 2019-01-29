@@ -39,7 +39,7 @@ Servo myServo; // Creates a servo object for controlling the servo motor
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600); // start serial communication , 9600 bitrate
   pinMode(buttonPin, INPUT); // initialize the pushbutton pin as an input:
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
@@ -48,16 +48,16 @@ void setup()
   pinMode(rx, INPUT);
   myServo.attach(12); // Defines on which pin is the servo motor attached
 
-  lcd.begin(16,2);//Defining 16 columns and 2 rows of lcd display
-  lcd.backlight();//To Power ON the back light
+  lcd.begin(16,2); //Defining 16 columns and 2 rows of lcd display
+  lcd.backlight(); //To Power ON the back light
 }
 
 
 void loop() 
 {
-  while(!run)
+  while(!run) //endless loop whole buttonState is low, when we push the button state->high and goes out the while loop
   {
-      buttonState = digitalRead(buttonPin);
+      buttonState = digitalRead(buttonPin); //reads the button states
       if (buttonState == HIGH) 
       {
         run = true;
@@ -67,7 +67,7 @@ void loop()
 
   while(run) 
   {
-      if (rightToLeft && currentValue < highDegree) 
+      if (rightToLeft && currentValue < highDegree) // if the sensor goes from right to left and the currentValue is lower than the highest degree (170) then we work in this if
       {
         currentValue += delta;
       } 
@@ -77,7 +77,7 @@ void loop()
       } 
       else if (!rightToLeft && currentValue > lowDegree) 
       {
-        rightToLeft -= delta;
+        currentValue -= delta;
       } 
       else if (!rightToLeft && currentValue == lowDegree) 
       {
@@ -137,7 +137,7 @@ int calculateDistance()
   lcd.print(distance);
   lcd.setCursor(13,1);
   lcd.print("cm");
-  delay(100);
+  delay(30);
   
   return distance;
 }
