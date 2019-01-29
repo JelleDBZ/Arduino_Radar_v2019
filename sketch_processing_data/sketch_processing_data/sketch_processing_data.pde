@@ -30,19 +30,19 @@ void setup() {
  smooth();
  myPort = new Serial(this,"COM8", 9600); // starts the serial communication
  myPort.bufferUntil('.'); // reads the data from the serial port up to the character '.'. So actually it reads this: angle,distance.
- orcFont = loadFont("OCRAExtended-30.vlw");
+ orcFont = loadFont("PMingLiU-ExtB-48.vlw");
 }
 
 void draw() {
   
-  fill(98,245,31);
+  fill(216,220,255);
   textFont(orcFont);
   // simulating motion blur and slow fade of the moving line
   noStroke();
   fill(0,4); 
   rect(0, 0, width, height-height*0.065); 
   
-  fill(98,245,31); // green color
+  fill(216,220,255); // green color
   // calls the functions for drawing the radar
   drawRadar(); 
   drawLine();
@@ -69,7 +69,7 @@ void drawRadar() {
   translate(width/2,height-height*0.074); // moves the starting coordinats to new location
   noFill();
   strokeWeight(2);
-  stroke(98,245,31);
+  stroke(255,255,255);
   // draws the arc lines
   arc(0,0,(width-width*0.0625),(width-width*0.0625),PI,TWO_PI);
   arc(0,0,(width-width*0.27),(width-width*0.27),PI,TWO_PI);
@@ -89,7 +89,7 @@ void drawObject() {
   pushMatrix();
   translate(width/2,height-height*0.074); // moves the starting coordinats to new location
   strokeWeight(9);
-  stroke(255,10,10); // red color
+  stroke(0,128,255); // red color
   pixsDistance = iDistance*((height-height*0.1666)*0.025); // covers the distance from the sensor from cm to pixels
   // limiting the range to 40 cms
   if(iDistance<40){
@@ -101,7 +101,7 @@ void drawObject() {
 void drawLine() {
   pushMatrix();
   strokeWeight(9);
-  stroke(30,250,60);
+  stroke(204,204,255);
   translate(width/2,height-height*0.074); // moves the starting coordinats to new location
   line(0,0,(height-height*0.12)*cos(radians(iAngle)),-(height-height*0.12)*sin(radians(iAngle))); // draws the line according to the angle
   popMatrix();
@@ -118,7 +118,7 @@ void drawText() { // draws the texts on the screen
   fill(0,0,0);
   noStroke();
   rect(0, height-height*0.0648, width, height);
-  fill(98,245,31);
+  fill(216,220,255);
   textSize(25);
   
   text("10cm",width-width*0.3854,height-height*0.0833);
@@ -128,12 +128,12 @@ void drawText() { // draws the texts on the screen
   textSize(40);
   text("Object: " + noObject, width-width*0.875, height-height*0.0277);
   text("Angle: " + iAngle +" °", width-width*0.48, height-height*0.0277);
-  text("Distance: ", width-width*0.26, height-height*0.0277);
+  text("Distance:           ", width-width*0.26, height-height*0.0277);
   if(iDistance<40) {
   text("        " + iDistance +" cm", width-width*0.225, height-height*0.0277);
   }
   textSize(25);
-  fill(98,245,60);
+  fill(216,220,255);
   translate((width-width*0.4994)+width/2*cos(radians(30)),(height-height*0.0907)-width/2*sin(radians(30)));
   rotate(-radians(-60));
   text("30°",0,0);

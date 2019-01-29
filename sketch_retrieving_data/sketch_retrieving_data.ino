@@ -112,7 +112,7 @@ void loop()
       askStateButton();
       
       myServo.write(currentValue);
-      //delay(15);
+      delay(30);
       distance = calculateDistance();
       
       Serial.print(currentValue); // Sends the current degree into the Serial Port
@@ -162,17 +162,23 @@ int calculateDistance()
   duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
   distance= duration*0.034/2;
 
-  lcd.clear();
-  lcd.setCursor(0,0); 
-  lcd.print("Degree: ");
-  lcd.setCursor(8,0); 
-  lcd.print(currentValue);
-  lcd.setCursor(0,1); 
-  lcd.print("Distance: ");
-  lcd.setCursor(9,1);
-  lcd.print(distance);
-  lcd.setCursor(13,1);
-  lcd.print("cm");
+ 
+  
+  if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160){
+      lcd.clear();
+      lcd.setCursor(0,0); 
+      lcd.print("Degree: ");
+      lcd.setCursor(8,0); 
+      lcd.print(currentValue);
+      lcd.setCursor(0,1); 
+      lcd.print("Distance: ");
+      lcd.setCursor(9,1);
+      lcd.print(distance);
+      lcd.setCursor(13,1);
+      lcd.print("cm");
+      delay(30);
+  }
+  
   
   return distance;
 }
