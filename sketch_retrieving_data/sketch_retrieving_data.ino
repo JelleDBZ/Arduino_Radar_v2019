@@ -85,7 +85,7 @@ void loop()
         }
   }
 
-  while(run) 
+  while(run) //if run true, start ascend and descend in degrees
   {
       if (rightToLeft && currentValue < highDegree) // if the sensor goes from right to left and the currentValue is lower than the highest degree (170) then we work in this if
       {
@@ -125,20 +125,25 @@ void loop()
 void askStateButton() 
 {
   buttonState = digitalRead(buttonPin);
-      if(Serial.available() > 0){     
-        bluetoothState = Serial.read();}
+      if(Serial.available() > 0)
+      {     
+        bluetoothState = Serial.read();
+      }
 
-      if (bluetoothState == '1') {
+      if (bluetoothState == '1')
+      {
           digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
           run = false;
-          }
+      }
      
-      else if (bluetoothState == '2') {
+      else if (bluetoothState == '2') 
+      {
           digitalWrite(led, LOW);
           
-          }    // turn the LED off by making the voltage LOW
+      }    // turn the LED off by making the voltage LOW
           
-      if (buttonState == HIGH) {
+      if (buttonState == HIGH) 
+      {
         bluetoothState = 1;
         run = false;
         delay(50);
