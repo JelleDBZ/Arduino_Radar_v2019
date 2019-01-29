@@ -1,3 +1,4 @@
+//library for servomotor
 #include <Servo.h>. 
 //LCD libraries
 #include <Wire.h> 
@@ -6,29 +7,29 @@
 //I2C pins declaration
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); 
 
+//constant values 
 const int ledblue=13;
 const int tx=1;
 const int rx=0;
-char inSerial[15];
+
+const int buttonPin = 2;     // the number of the pushbutton pin
+const int delta = 1;
 
 // Defines the Trigger and Echo pins of the Ultrasonic Sensor
 const int trigPin = 10;
 const int echoPin = 11;
+
 // Constant degrees
 const int lowDegree = 10; //here we can choose our degrees
 const int highDegree = 170;
 
-int width;
-int height;
-
+//booleans
 boolean run = false;
-boolean rechtsNaarLinks = true;
+boolean rightToLeft = true;
 
-int huidigeWaarde = lowDegree;
-const int delta = 1;
+int currentValue = lowDegree;
 int buttonState = 0; 
-const int buttonPin = 2;     // the number of the pushbutton pin
-
+char inSerial[15];
 
 // Variables for the duration and the distance
 long duration;
@@ -36,7 +37,8 @@ int distance;
 
 Servo myServo; // Creates a servo object for controlling the servo motor
 
-void setup(){
+void setup()
+{
   Serial.begin(9600);
   pinMode(buttonPin, INPUT); // initialize the pushbutton pin as an input:
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
@@ -51,41 +53,49 @@ void setup(){
 }
 
 
-void loop() {
-  while(!run){
+void loop() 
+{
+  while(!run)
+  {
       buttonState = digitalRead(buttonPin);
-      if (buttonState == HIGH) {
+      if (buttonState == HIGH) 
+      {
         run = true;
         delay(200);
       }
   }
 
-  while(run) {
-      if (rechtsNaarLinks && huidigeWaarde < highDegree) 
+  while(run) 
+  {
+      if (rightToLeft && currentValue < highDegree) 
       {
-        huidigeWaarde += delta;
+        currentValue += delta;
       } 
-      else if (rechtsNaarLinks && huidigeWaarde == highDegree) 
+      else if (rightToLeft && currentValue == highDegree) 
       {
-        rechtsNaarLinks = false;
+        rightToLeft = false;
       } 
-      else if (!rechtsNaarLinks && huidigeWaarde > lowDegree) 
+      else if (!rightToLeft && currentValue > lowDegree) 
       {
-        huidigeWaarde -= delta;
+        rightToLeft -= delta;
       } 
-      else if (!rechtsNaarLinks && huidigeWaarde == lowDegree) 
+      else if (!rightToLeft && currentValue == lowDegree) 
       {
-        rechtsNaarLinks = true;
+        rightToLeft = true;
         
       }
-      else {
-        // error
+      else 
+      {
+        // need to throw exception here
       }
+      
       askStateButton();
-      myServo.write(huidigeWaarde);
+      
+      myServo.write(currentValue);
       delay(30);
       distance = calculateDistance();
-      Serial.print(huidigeWaarde); // Sends the current degree into the Serial Port
+      
+      Serial.print(currentValue); // Sends the current degree into the Serial Port
       Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
       Serial.print(distance); // Sends the distance value into the Serial Port
       Serial.print("."); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
@@ -94,9 +104,11 @@ void loop() {
   }
 }
 
-void askStateButton() {
+void askStateButton() 
+{
   buttonState = digitalRead(buttonPin);
-    if (buttonState == HIGH) {
+    if (buttonState == HIGH) 
+    {
       run = false;
       delay(200);
     }
@@ -118,7 +130,7 @@ int calculateDistance()
   lcd.setCursor(0,0); 
   lcd.print("Degree: ");
   lcd.setCursor(8,0); 
-  lcd.print(huidigeWaarde);
+  lcd.print(currentValue);
   lcd.setCursor(0,1); 
   lcd.print("Distance: ");
   lcd.setCursor(9,1);
