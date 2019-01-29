@@ -1,12 +1,14 @@
 #include <Servo.h>. 
+//LCD libraries
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
+
 //I2C pins declaration
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); 
 
-int ledblue=13;
-int tx=1;
-int rx=0;
+const int ledblue=13;
+const int tx=1;
+const int rx=0;
 char inSerial[15];
 
 // Defines the Trigger and Echo pins of the Ultrasonic Sensor
@@ -124,7 +126,6 @@ int calculateDistance()
   lcd.setCursor(13,1);
   lcd.print("cm");
   delay(100);
-  
   
   return distance;
 }
