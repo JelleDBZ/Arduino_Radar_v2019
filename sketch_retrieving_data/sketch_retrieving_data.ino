@@ -1,4 +1,8 @@
 #include <Servo.h>. 
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+//I2C pins declaration
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); 
 
 int ledblue=13;
 int tx=1;
@@ -39,6 +43,9 @@ void setup(){
   pinMode(tx, OUTPUT);
   pinMode(rx, INPUT);
   myServo.attach(12); // Defines on which pin is the servo motor attached
+
+  lcd.begin(16,2);//Defining 16 columns and 2 rows of lcd display
+  lcd.backlight();//To Power ON the back light
 }
 
 
@@ -104,5 +111,20 @@ int calculateDistance()
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
   distance= duration*0.034/2;
+
+  lcd.clear();
+  lcd.setCursor(0,0); 
+  lcd.print("Degree: ");
+  lcd.setCursor(8,0); 
+  lcd.print(huidigeWaarde);
+  lcd.setCursor(0,1); 
+  lcd.print("Distance: ");
+  lcd.setCursor(9,1);
+  lcd.print(distance);
+  lcd.setCursor(13,1);
+  lcd.print("cm");
+  delay(100);
+  
+  
   return distance;
 }
