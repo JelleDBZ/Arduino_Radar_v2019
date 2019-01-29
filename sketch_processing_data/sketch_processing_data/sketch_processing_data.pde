@@ -26,21 +26,11 @@ PFont orcFont;
 
 void setup() {
   
-  
  size (1920, 1080); // ***CHANGE THIS TO YOUR SCREEN RESOLUTION*** (user input)
  smooth();
  myPort = new Serial(this,"COM8", 9600); // starts the serial communication
  myPort.bufferUntil('.'); // reads the data from the serial port up to the character '.'. So actually it reads this: angle,distance.
  orcFont = loadFont("OCRAExtended-30.vlw");
-}
-
-void setupSize(){
-  if(Serial.available()){
-     Serial.println("Hello");
-  }
- 
-  
-
 }
 
 void draw() {
@@ -60,6 +50,8 @@ void draw() {
   drawText();
 }
 void serialEvent (Serial myPort) { // starts reading data from the Serial Port
+  myPort.available();
+
   // reads the data from the Serial Port up to the character '.' and puts it into the String variable "data".
   data = myPort.readStringUntil('.');
   data = data.substring(0,data.length()-1);

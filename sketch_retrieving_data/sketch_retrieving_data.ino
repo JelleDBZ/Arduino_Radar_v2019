@@ -8,7 +8,7 @@
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); 
 
 //constant values 
-const int ledblue=13;
+const int led=13;
 const int tx=1;
 const int rx=0;
 
@@ -29,6 +29,7 @@ boolean rightToLeft = true;
 
 int currentValue = lowDegree;
 int buttonState = 0; 
+int bluetoothState;
 char inSerial[15];
 
 // Variables for the duration and the distance
@@ -43,7 +44,7 @@ void setup()
   pinMode(buttonPin, INPUT); // initialize the pushbutton pin as an input:
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
-  pinMode(ledblue, OUTPUT);
+  pinMode(led, OUTPUT);
   pinMode(tx, OUTPUT);
   pinMode(rx, INPUT);
   myServo.attach(12); // Defines on which pin is the servo motor attached
@@ -57,12 +58,31 @@ void loop()
 {
   while(!run) //endless loop whole buttonState is low, when we push the button state->high and goes out the while loop
   {
-      buttonState = digitalRead(buttonPin); //reads the button states
-      if (buttonState == HIGH) 
-      {
-        run = true;
-        delay(200);
-      }
+       buttonState = digitalRead(buttonPin); //reads the button states
+       
+       if(Serial.available() > 0)
+       {     
+          bluetoothState = Serial.read();
+       }
+  
+        if (bluetoothState == '1') 
+        {
+            digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+            run = true;
+        }
+       
+        else if (bluetoothState == '2') 
+        {
+            digitalWrite(led, LOW);
+            
+        }    // turn the LED off by making the voltage LOW
+            
+        if (buttonState == HIGH) 
+        {
+          bluetoothState = 1;
+          run = true;
+          delay(50);
+        }
   }
 
   while(run) 
@@ -92,26 +112,37 @@ void loop()
       askStateButton();
       
       myServo.write(currentValue);
-      delay(30);
+      //delay(15);
       distance = calculateDistance();
       
       Serial.print(currentValue); // Sends the current degree into the Serial Port
       Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
       Serial.print(distance); // Sends the distance value into the Serial Port
       Serial.print("."); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
-      delay(30);
-      
   }
 }
 
 void askStateButton() 
 {
   buttonState = digitalRead(buttonPin);
-    if (buttonState == HIGH) 
-    {
-      run = false;
-      delay(200);
-    }
+      if(Serial.available() > 0){     
+        bluetoothState = Serial.read();}
+
+      if (bluetoothState == '1') {
+          digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+          run = false;
+          }
+     
+      else if (bluetoothState == '2') {
+          digitalWrite(led, LOW);
+          
+          }    // turn the LED off by making the voltage LOW
+          
+      if (buttonState == HIGH) {
+        bluetoothState = 1;
+        run = false;
+        delay(50);
+      }
 }
 
 // Function for calculating the distance measured by the Ultrasonic sensor
@@ -137,7 +168,6 @@ int calculateDistance()
   lcd.print(distance);
   lcd.setCursor(13,1);
   lcd.print("cm");
-  delay(30);
   
   return distance;
 }
