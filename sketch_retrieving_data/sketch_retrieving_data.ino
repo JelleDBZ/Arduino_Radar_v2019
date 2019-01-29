@@ -11,30 +11,28 @@ const int echoPin = 11;
 // Constant degrees
 const int lowDegree = 10; //here we can choose our degrees
 const int highDegree = 170;
-// constants won't change. They're used here to set pin numbers:
-const int buttonPin = 2;     // the number of the pushbutton pin
-const int ledPin =  13;      // the number of the LED pin
-int buttonState = 0; 
 
-// Asking for user input
 int width;
 int height;
+
+boolean run = false;
+boolean rechtsNaarLinks = true;
+
+int huidigeWaarde = lowDegree;
+const int delta = 1;
+int buttonState = 0; 
+const int buttonPin = 2;     // the number of the pushbutton pin
+
 
 // Variables for the duration and the distance
 long duration;
 int distance;
+
 Servo myServo; // Creates a servo object for controlling the servo motor
 
-
 void setup(){
-
-  // initialize the LED pin as an output:
-  pinMode(ledPin, OUTPUT);
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
-  
   Serial.begin(9600);
-  
+  pinMode(buttonPin, INPUT); // initialize the pushbutton pin as an input:
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
   pinMode(ledblue, OUTPUT);
@@ -43,66 +41,56 @@ void setup(){
   myServo.attach(12); // Defines on which pin is the servo motor attached
 }
 
-void loop(){
-  int i=0;
-  int m=0;
-  delay(500);
+
+void loop() {
+  while(!run){
+      buttonState = digitalRead(buttonPin);
+      if (buttonState == HIGH) {
+        run = true;
+        delay(200);
+      }
+  }
+
+  while(run) {
+      if (rechtsNaarLinks && huidigeWaarde < highDegree) 
+      {
+        huidigeWaarde += delta;
+      } 
+      else if (rechtsNaarLinks && huidigeWaarde == highDegree) 
+      {
+        rechtsNaarLinks = false;
+      } 
+      else if (!rechtsNaarLinks && huidigeWaarde > lowDegree) 
+      {
+        huidigeWaarde -= delta;
+      } 
+      else if (!rechtsNaarLinks && huidigeWaarde == lowDegree) 
+      {
+        rechtsNaarLinks = true;
+        
+      }
+      else {
+        // error
+      }
+      askStateButton();
+      myServo.write(huidigeWaarde);
+      delay(30);
+      distance = calculateDistance();
+      Serial.print(huidigeWaarde); // Sends the current degree into the Serial Port
+      Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
+      Serial.print(distance); // Sends the distance value into the Serial Port
+      Serial.print("."); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
+      delay(30);
+      
+  }
+}
+
+void askStateButton() {
   buttonState = digitalRead(buttonPin);
-
-   if (Serial.available() > 0 || buttonState == HIGH) {
-    while (Serial.available() > 0) {
-      inSerial[i]=Serial.read();
-      i++;
+    if (buttonState == HIGH) {
+      run = false;
+      delay(200);
     }
-    inSerial[i]='\0';
-    if(!strcmp(inSerial,"2off")){ //dien moe ng veranderen na de interrupt
-      digitalWrite(ledblue, LOW);
-      for(m=0;m<11;m++){
-        inSerial[m]=0;
-      }
-      i=0;
-    }
-    if(!strcmp(inSerial,"2on") || buttonState == HIGH){ //links rechts tourke doen
-      digitalWrite(ledblue, HIGH);
-      for(int i=lowDegree;i<=highDegree;i++)
-      {  
-        myServo.write(i);
-        delay(30);
-        distance = calculateDistance();// Calls a function for calculating the distance measured by the Ultrasonic sensor for each degree
-        printSerial(i); 
-        delay(30);
-      }
-      // Repeats the previous lines from highDegree to lowDegree
-      for(int i=highDegree;i>lowDegree;i--)
-      {  
-        myServo.write(i);
-        delay(30);
-        distance = calculateDistance();
-        printSerial(i);
-        delay(30);
-      }
-      for(m=0;m<11;m++){
-        inSerial[m]=0;
-      }
-      i=0;
-    }
-    else{
-      for(m=0;m<11;m++){
-        inSerial[m]=0;
-      }
-      i=0;
-    }
-  }
-  }
-  
-
-void printSerial(int i)
-{
-  
-  Serial.print(i); // Sends the current degree into the Serial Port
-  Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
-  Serial.print(distance); // Sends the distance value into the Serial Port
-  Serial.print("."); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
 }
 
 // Function for calculating the distance measured by the Ultrasonic sensor
