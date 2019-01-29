@@ -164,20 +164,21 @@ int calculateDistance()
   
    
     
-    if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160){
-        lcd.clear();
-        lcd.setCursor(0,0); 
-        lcd.print("Degree: ");
-        lcd.setCursor(8,0); 
-        lcd.print(currentValue);
-        lcd.setCursor(0,1); 
-        lcd.print("Distance: ");
-        lcd.setCursor(9,1);
-        lcd.print(distance);
-        lcd.setCursor(13,1);
-        lcd.print("cm");
-        delay(30);
-  }
+    if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160)
+    {
+          lcd.clear();
+          lcd.setCursor(0,0); 
+          lcd.print("Degree: ");
+          lcd.setCursor(8,0); 
+          lcd.print(currentValue);
+          lcd.setCursor(0,1); 
+          lcd.print("Distance: ");
+          lcd.setCursor(9,1);
+          lcd.print(distance);
+          lcd.setCursor(13,1);
+          lcd.print("cm");
+          delay(30);
+    }
   
   
     return distance;
