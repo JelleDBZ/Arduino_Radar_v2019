@@ -62,7 +62,7 @@ void loop()
        
        if(Serial.available() > 0)
        {     
-          bluetoothState = Serial.read();
+            bluetoothState = Serial.read();
        }
   
         if (bluetoothState == '1') 
@@ -79,9 +79,9 @@ void loop()
             
         if (buttonState == HIGH) 
         {
-          bluetoothState = 1;
-          run = true;
-          delay(50);
+            bluetoothState = 1;
+            run = true;
+            delay(50);
         }
   }
 
@@ -127,7 +127,7 @@ void askStateButton()
   buttonState = digitalRead(buttonPin);
       if(Serial.available() > 0)
       {     
-        bluetoothState = Serial.read();
+          bluetoothState = Serial.read();
       }
 
       if (bluetoothState == '1')
@@ -144,41 +144,45 @@ void askStateButton()
           
       if (buttonState == HIGH) 
       {
-        bluetoothState = 1;
-        run = false;
-        delay(50);
+          bluetoothState = 1;
+          run = false;
+          delay(50);
       }
 }
+
+
+//function for bluetooth
+boolean
 
 // Function for calculating the distance measured by the Ultrasonic sensor
 int calculateDistance()
 { 
-  digitalWrite(trigPin, LOW); 
-  delayMicroseconds(2);
-  // Sets the trigPin on HIGH state for 10 micro seconds
-  digitalWrite(trigPin, HIGH); 
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
-  distance= duration*0.034/2;
-
- 
+    digitalWrite(trigPin, LOW); 
+    delayMicroseconds(2);
+    // Sets the trigPin on HIGH state for 10 micro seconds
+    digitalWrite(trigPin, HIGH); 
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
+    distance= duration*0.034/2;
   
-  if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160){
-      lcd.clear();
-      lcd.setCursor(0,0); 
-      lcd.print("Degree: ");
-      lcd.setCursor(8,0); 
-      lcd.print(currentValue);
-      lcd.setCursor(0,1); 
-      lcd.print("Distance: ");
-      lcd.setCursor(9,1);
-      lcd.print(distance);
-      lcd.setCursor(13,1);
-      lcd.print("cm");
-      delay(30);
+   
+    
+    if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160){
+        lcd.clear();
+        lcd.setCursor(0,0); 
+        lcd.print("Degree: ");
+        lcd.setCursor(8,0); 
+        lcd.print(currentValue);
+        lcd.setCursor(0,1); 
+        lcd.print("Distance: ");
+        lcd.setCursor(9,1);
+        lcd.print(distance);
+        lcd.setCursor(13,1);
+        lcd.print("cm");
+        delay(30);
   }
   
   
-  return distance;
+    return distance;
 }
