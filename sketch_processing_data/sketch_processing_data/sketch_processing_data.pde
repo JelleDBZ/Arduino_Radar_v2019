@@ -69,7 +69,7 @@ void drawRadar() {
   translate(width/2,height-height*0.074); // moves the starting coordinats to new location
   noFill();
   strokeWeight(2);
-  stroke(255,255,255);
+  stroke(216,220,255);
   // draws the arc lines
   arc(0,0,(width-width*0.0625),(width-width*0.0625),PI,TWO_PI);
   arc(0,0,(width-width*0.27),(width-width*0.27),PI,TWO_PI);

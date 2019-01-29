@@ -106,7 +106,7 @@ void loop()
       }
       else 
       {
-        // need to throw exception here
+       //error 
       }
       
       askStateButton();
