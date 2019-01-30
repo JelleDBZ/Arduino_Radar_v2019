@@ -11,6 +11,7 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 const int led=13;
 const int tx=1;
 const int rx=0;
+const int buzzer = 9; // port 9
 
 const int buttonPin = 2;     // the number of the pushbutton pin
 const int delta = 1;
@@ -41,6 +42,7 @@ Servo myServo; // Creates a servo object for controlling the servo motor
 void setup()
 {
   Serial.begin(9600); // start serial communication , 9600 bitrate
+  pinMode(buzzer, OUTPUT); //pin 9 as output
   pinMode(buttonPin, INPUT); // initialize the pushbutton pin as an input:
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
@@ -112,8 +114,15 @@ void loop()
       askStateButton();
       
       myServo.write(currentValue);
-      delay(30);
+      delay(15);
       distance = calculateDistance();
+      
+      //buzzer functionality
+      if(distance < 20) {
+        digitalWrite(buzzer, HIGH); 
+      }else {
+        digitalWrite(buzzer, LOW);
+      }
       
       Serial.print(currentValue); // Sends the current degree into the Serial Port
       Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
@@ -162,8 +171,6 @@ int calculateDistance()
     duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
     distance= duration*0.034/2;
   
-   
-    
     if(currentValue == 20 || currentValue == 40 || currentValue == 60 || currentValue == 80  || currentValue == 100 || currentValue == 120 || currentValue == 140 || currentValue == 160)
     {
           lcd.clear();
@@ -179,7 +186,5 @@ int calculateDistance()
           lcd.print("cm");
           delay(30);
     }
-  
-  
     return distance;
 }
